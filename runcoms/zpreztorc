@@ -1,11 +1,3 @@
-#
-# Sets Prezto options.
-#
-# Authors:
-#   Sorin Ionescu <sorin.ionescu@gmail.com>
-#
-
-#
 # General
 #
 
@@ -26,16 +18,25 @@ zstyle ':prezto:*:*' color 'yes'
 
 # Set the Prezto modules to load (browse modules).
 # The order matters.
+# time zsh -i -c exit
 zstyle ':prezto:load' pmodule \
   'environment' \
   'terminal' \
   'editor' \
   'history' \
+  'archive' \
+  'command-not-found' \
   'directory' \
   'spectrum' \
-  'utility' \
+  'autosuggestions' \
   'completion' \
-  'prompt'
+  'utility' \
+  'ruby' \
+  'rails' \
+  'git' \
+  'syntax-highlighting' \
+  'history-substring-search' \
+  'prompt' \
 
 #
 # Autosuggestions
@@ -57,7 +58,7 @@ zstyle ':prezto:load' pmodule \
 #
 
 # Set the key mapping style to 'emacs' or 'vi'.
-zstyle ':prezto:module:editor' key-bindings 'emacs'
+zstyle ':prezto:module:editor' key-bindings 'vi'
 
 # Auto convert .... to ../..
 # zstyle ':prezto:module:editor' dot-expansion 'yes'
@@ -113,7 +114,7 @@ zstyle ':prezto:module:editor' key-bindings 'emacs'
 # Set the prompt theme to load.
 # Setting it to 'random' loads a random theme.
 # Auto set to 'off' on dumb terminals.
-zstyle ':prezto:module:prompt' theme 'sorin'
+zstyle ':prezto:module:prompt' theme 'pure'
 
 # Set the working directory prompt display length.
 # By default, it is set to 'short'. Set it to 'long' (without '~' expansion)
@@ -129,10 +130,10 @@ zstyle ':prezto:module:prompt' theme 'sorin'
 #
 
 # Auto switch the Python virtualenv on directory change.
-# zstyle ':prezto:module:python:virtualenv' auto-switch 'yes'
+#zstyle ':prezto:module:python:virtualenv' auto-switch 'yes'
 
 # Automatically initialize virtualenvwrapper if pre-requisites are met.
-# zstyle ':prezto:module:python:virtualenv' initialize 'yes'
+#zstyle ':prezto:module:python:virtualenv' initialize 'yes'
 
 #
 # Ruby
@@ -140,7 +141,7 @@ zstyle ':prezto:module:prompt' theme 'sorin'
 
 # Auto switch the Ruby version on directory change.
 # zstyle ':prezto:module:ruby:chruby' auto-switch 'yes'
-
+zstyle ':prezto:module:ruby:info:version' format 'version:%v'
 #
 # Screen
 #

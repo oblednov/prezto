@@ -1,13 +1,72 @@
-#
 # Executes commands at the start of an interactive session.
 #
 # Authors:
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
-#
+#   Oleg Blednov <oleg@blednov.me>
 
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-# Customize to your needs...
+# ## Helper scripts
+source "$DOTFILES/scripts/helpers/functions.sh"
+source "$DOTFILES/scripts/helpers/tools.sh"
+source "$DOTFILES/variables"
+source "$DOTFILES/aliases"
+
+# Add 256bit support to shell
+BASE16_SHELL=$HOME/.config/base16-shell/
+[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+
+
+fpath=($DOTFILES/zsh/custom/completion $fpath)
+
+# -- Named Directories ---------------------------------------------------------
+unsetopt auto_name_dirs
+
+# -- Completion Config ---------------------------------------------------------
+zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*.class'
+
+# -- Command History -----------------------------------------------------------
+export HISTSIZE=5000
+export SAVEHIST=5000
+
+# -- Options -------------------------------------------------------------------
+unsetopt correct_all
+unsetopt correct
+
+# 10 second wait if you do something that will delete everything.  I wish I'd had this before...
+setopt RM_STAR_WAIT
+
+# Incremental search is elite!
+bindkey -M vicmd "/" history-incremental-search-backward
+bindkey -M vicmd "?" history-incremental-search-forward
+bindkey -M vicmd "q" push-line
+
+# -- Git -----------------------------------------------------------------------
+zstyle ':completion:*:*:hub:*' user-commands ${${(M)${(k)commands}:#git-*}/git-/}
+_git-delete-tag() { compadd "$@" $(git tag) }
+
+
+# -- fzf -----------------------------------------------------------------------
+if [ -f ~/.fzf.zsh ]; then
+  source ~/.fzf.zsh
+  export FZF_TMUX=1
+  export FZF_DEFAULT_OPTS='--color 16,info:6,hl:13,hl+:13'
+  export FZF_DEFAULT_COMMAND="rg --files-with-matches --no-messages -F ''"
+  export FZF_CTRL_T_COMMAND="rg --files-with-matches --no-messages --hidden -F '' | grep -v .git/"
+fi
+
+# Enable ssh support for gpg-agent
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+
+# added by travis gem
+[ -f /home/gamma/.travis/travis.sh ] && source /home/gamma/.travis/travis.sh
+
+# Ruby
+source /usr/share/chruby/chruby.sh
+
+RUBIES+=(
+  "$HOME/.rubies/ruby-2.4.4"
+)
